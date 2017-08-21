@@ -101,8 +101,8 @@ if ( ((t.hour)*60 +t.min  )<=cycle_remplissage*dureeon &&  ((t.hour)*60 +t.min+t
     // sleep_disable();    
     pinMode(pinLed,OUTPUT);
     //digitalWrite(pinLed,HIGH);  
-    analogWrite(pinLed,60);//de 0 à 255
-   // analogWrite(pinLed,120);//de 0 à 255
+    //analogWrite(pinLed,60);//de 0 à 255
+    analogWrite(pinLed,120);//de 0 à 255
    }
 
 //else if ((cycle_remplissage*dureeon <long (t.date*86400+t.hour*3600 +t.min*60+t.sec-86400))  && long (t.date*86400+t.hour*3600 +t.min*60+t.sec-86400)<(cycle_remplissage*dureeon+10))
