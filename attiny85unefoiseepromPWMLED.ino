@@ -27,7 +27,7 @@ int compteur=0;
 //int count_remplissage=5;
 int cycle_remplissage;
 int cycletotal=0;
-int dureeon=3600;// EN SECONDES
+int dureeon=60;// EN MINUTES
 int dureeoff=600; // EN SECONDES
 int valueread;   //Location we want the data to be put.
 int var;
@@ -95,17 +95,18 @@ void loop(void) {
  wdt_reset(); 
 
 //if (long (t.date*86400+ t.hour*3600 +(t.min%1)*60+t.sec -86400 )<=cycle_remplissage*dureeon &&  long(t.date*86400+t.hour*3600 +(t.min%1)*60+t.sec -86400)>=0) 
-if (long ( (t.hour)*3600 +t.min*60+t.sec  )<=cycle_remplissage*dureeon &&  long((t.hour)*3600 +t.min*60+t.sec )>=0) 
+if ( ((t.hour)*60 +t.min  )<=cycle_remplissage*dureeon &&  ((t.hour)*60 +t.min+t.sec )>=0) 
    {
     
     // sleep_disable();    
     pinMode(pinLed,OUTPUT);
     //digitalWrite(pinLed,HIGH);  
     analogWrite(pinLed,60);//de 0 à 255
+   // analogWrite(pinLed,120);//de 0 à 255
    }
 
 //else if ((cycle_remplissage*dureeon <long (t.date*86400+t.hour*3600 +t.min*60+t.sec-86400))  && long (t.date*86400+t.hour*3600 +t.min*60+t.sec-86400)<(cycle_remplissage*dureeon+10))
-else if ((cycle_remplissage*dureeon <long ((t.hour)*3600 +t.min*60+t.sec))  && long ((t.hour)*3600 +t.min*60+t.sec)<(cycle_remplissage*dureeon+15))
+else if ((cycle_remplissage*dureeon <((t.hour)*60 +t.min))  && ((t.hour)*60 +t.min)<(cycle_remplissage*dureeon+2))
    {
     EEPROM.put(0, 0);// remise à 0 du compteur de cycle
     //digitalWrite(pinLed, LOW); 
