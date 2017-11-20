@@ -38,6 +38,7 @@ void setup(void) {
 
 pinMode(pinLed,OUTPUT);
 
+
 /////////////////////////////////////
  EEPROM.get(0, cycle_remplissage);
   EEPROM.put(0, (cycle_remplissage+1)%10);
@@ -76,7 +77,15 @@ setup_watchdog(9); // approximately 8s sleep
   //rtc.setDOW(MONDAY);        // Set Day-of-Week to FRIDAY
   rtc.setTime(0,0, 0);     // Set the time to 12:00:00 (24hr format)
   rtc.setDate(1, 7, 2017);   // Set the date to August 6th, 2010
-   
+   Time t;
+  t = rtc.getTime();
+  
+  while(t.hour != 0 && t.min != 0){
+  
+ rtc.setTime(0, 0, 0);     // Set the time to 12:00:00 (24hr format)
+  delay(1000);
+  t = rtc.getTime();
+} 
 
 
 }
@@ -95,18 +104,20 @@ void loop(void) {
  wdt_reset(); 
 
 //if (long (t.date*86400+ t.hour*3600 +(t.min%1)*60+t.sec -86400 )<=cycle_remplissage*dureeon &&  long(t.date*86400+t.hour*3600 +(t.min%1)*60+t.sec -86400)>=0) 
-if ( ((t.hour)*60 +t.min  )<=cycle_remplissage*dureeon &&  ((t.hour)*60 +t.min+t.sec )>=0) 
+//if ( ((t.hour)*60 +t.min  )<=cycle_remplissage*dureeon &&  ((t.hour)*60 +t.min+t.sec )>=0) 
+if ( ((t.hour)*60 +t.min  )<cycle_remplissage*dureeon ) 
    {
     
     // sleep_disable();    
     pinMode(pinLed,OUTPUT);
     //digitalWrite(pinLed,HIGH);  
     analogWrite(pinLed,60);//de 0 à 255
-   // analogWrite(pinLed,120);//de 0 à 255
+  // analogWrite(pinLed,120);//de 0 à 255
    }
 
 //else if ((cycle_remplissage*dureeon <long (t.date*86400+t.hour*3600 +t.min*60+t.sec-86400))  && long (t.date*86400+t.hour*3600 +t.min*60+t.sec-86400)<(cycle_remplissage*dureeon+10))
-else if ((cycle_remplissage*dureeon <((t.hour)*60 +t.min))  && ((t.hour)*60 +t.min)<(cycle_remplissage*dureeon+2))
+//else if ((cycle_remplissage*dureeon <((t.hour)*60 +(t.min) ))  && ((t.hour)*60 +(t.min) )<(cycle_remplissage*dureeon+2))
+else if (((t.hour)*60 +(t.min) )== (cycle_remplissage*dureeon )) 
    {
     EEPROM.put(0, 0);// remise à 0 du compteur de cycle
     //digitalWrite(pinLed, LOW); 
@@ -181,9 +192,3 @@ return hour%24 + minute/60.0f;
 }
 
 
-
-
-
-
-
- 
